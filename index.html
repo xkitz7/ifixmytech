@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iFixMyTech - Your Ultimate Tech Repair Platform</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -17,442 +16,517 @@
         body {
             background-color: #f5f7fa;
             color: #333;
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: white;
-            padding: 1rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        nav {
             display: flex;
-            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            background-color: white;
+            border-right: 1px solid #d1d5db;
+            padding: 0.5rem;
+            transition: width 0.3s ease;
+            width: 225px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .title-section {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .title-content {
+            display: flex;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .title-content:hover {
+            background-color: #f3f4f6;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        nav ul {
             display: flex;
-            list-style: none;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #4f46e5;
+            border-radius: 0.375rem;
+            flex-shrink: 0;
         }
 
-        nav ul li {
-            margin-left: 2rem;
+        .logo svg {
+            width: 1.5rem;
+            height: auto;
+            fill: white;
         }
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+        .title-text {
+            display: flex;
+            flex-direction: column;
         }
 
-        nav ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 100px auto 40px;
-            padding: 0 2rem;
-        }
-
-        section {
-            margin-bottom: 4rem;
-            padding: 2.5rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: linear-gradient(rgba(110, 142, 251, 0.9), rgba(167, 119, 227, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="white" width="100" height="100" opacity="0.1"/></svg>');
-            color: white;
-            border-radius: 12px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-
-        button {
-            background-color: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .title-text .name {
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        button:hover {
-            background-color: #ff5252;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        .title-text .plan {
+            font-size: 0.75rem;
+            color: #6b7280;
         }
 
-        h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-            color: #6e8efb;
+        .chevron-down {
+            margin-right: 0.5rem;
+            color: #6b7280;
+        }
+
+        /* Sidebar Options */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            flex: 1;
+        }
+
+        .option {
             position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        h2:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(to right, #6e8efb, #a777e3);
-            border-radius: 2px;
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        #contact {
-            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
-            padding: 3rem;
-        }
-
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .contact-info {
-            padding-right: 2rem;
-        }
-
-        .contact-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #6e8efb;
-        }
-
-        .contact-detail {
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-detail i {
-            font-size: 1.5rem;
-            color: #6e8efb;
-            margin-right: 1rem;
-            width: 30px;
-        }
-
-        .contact-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group textarea {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            height: 2.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            padding: 0;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #6e8efb;
-            box-shadow: 0 0 0 3px rgba(110, 142, 251, 0.2);
+        .option:hover {
+            background-color: #f3f4f6;
+            color: #4f46e5;
         }
 
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
+        .option.active {
+            background-color: #eef2ff;
+            color: #4f46e5;
         }
 
-        .cf-turnstile {
-            margin: 1.5rem 0;
+        .option-icon {
             display: flex;
+            align-items: center;
             justify-content: center;
+            width: 2.5rem;
+            height: 100%;
+            font-size: 1.125rem;
+            flex-shrink: 0;
         }
 
-        .submit-btn {
-            background: linear-gradient(to right, #6e8efb, #a777e3);
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.1rem;
-            margin-top: 1rem;
+        .option-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+        .sidebar.collapsed .option-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
         }
 
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        .notification-badge {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1rem;
+            height: 1rem;
+            background-color: #4f46e5;
             color: white;
-            margin-top: 2rem;
+            border-radius: 50%;
+            font-size: 0.625rem;
         }
 
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-top: 1.5rem;
-            display: none;
+        /* Toggle Button */
+        .toggle-button {
+            border: none;
+            background: transparent;
+            border-top: 1px solid #d1d5db;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            padding: 0.5rem;
+            margin-top: auto;
         }
 
-        @media (max-width: 900px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-info {
-                padding-right: 0;
-                margin-bottom: 2rem;
-            }
-            
-            nav {
+        .toggle-button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .toggle-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1.125rem;
+            transition: transform 0.3s;
+        }
+
+        .sidebar.collapsed .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .toggle-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .sidebar.collapsed .toggle-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            background-color: #eef2ff;
+            color: #4f46e5;
+        }
+
+        .card-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-change {
+            font-size: 0.875rem;
+            color: #059669;
+        }
+
+        .card-change.negative {
+            color: #dc2626;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
                 flex-direction: column;
             }
             
-            nav ul {
-                margin-top: 1rem;
+            .sidebar {
+                position: relative;
+                height: auto;
+                width: 100%;
+                padding: 0.5rem 1rem;
             }
             
-            nav ul li {
-                margin: 0 0.5rem;
+            .sidebar.collapsed {
+                width: 100%;
+                height: 60px;
             }
             
-            .hero h1 {
-                font-size: 2.2rem;
+            .sidebar.collapsed .options-container {
+                display: none;
             }
-        }
-
-        @media (max-width: 600px) {
-            nav ul {
-                flex-wrap: wrap;
+            
+            .title-content {
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .toggle-button {
+                border-top: none;
+                margin-top: 0;
+            }
+            
+            .toggle-content {
                 justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 0.5rem;
-            }
-            
-            section {
-                padding: 1.5rem;
-            }
-            
-            .hero {
-                padding: 2rem 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            main {
-                margin-top: 140px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">iFixMyTech</div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#downloads">Downloads</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <h1>Fix Your Tech, Your Way.</h1>
-            <p>The all-in-one platform for tech repair tutorials, community help, and powerful tools.</p>
-            <button onclick="alert('Download starting soon!')">Download Now</button>
-        </section>
-
-        <section id="about">
-            <h2>Why Choose iFixMyTech?</h2>
-            <p>Built by a 13-year-old developer passionate about making tech repair accessible to everyone.</p>
-            <p>Our platform offers step-by-step tutorials, diagnostic tools, and a supportive community to help you repair your devices with confidence.</p>
-            <p>Whether you're dealing with a cracked screen, software issues, or hardware failures, iFixMyTech has the resources you need.</p>
-        </section>
-
-        <section id="downloads">
-            <h2>Get the App</h2>
-            <p>Download the powerful iFixMyTech desktop application for Windows.</p>
-            <p>Our app includes device diagnostics, tutorial videos, and a community forum to get help with your repairs.</p>
-            <button onclick="alert('Windows download starting soon!')">Download for Windows</button>
-        </section>
-
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <div class="contact-detail">
-                        <i class="fas fa-envelope"></i>
-                        <span>support@ifixmytech.com</span>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="title-section">
+            <div class="title-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <svg viewBox="0 0 50 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.4992 2H37.5808L22.0816 24.9729H1L16.4992 2Z"></path>
+                            <path d="M17.4224 27.102L11.4192 36H33.5008L49 13.0271H32.7024L23.2064 27.102H17.4224Z"></path>
+                        </svg>
                     </div>
-                    <div class="contact-detail">
-                        <i class="fas fa-phone"></i>
-                        <span>+1 (555) 123-4567</span>
+                    <div class="title-text">
+                        <span class="name">TomIsLoading</span>
+                        <span class="plan">Pro Plan</span>
                     </div>
-                    <div class="contact-detail">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Tech Street, Digital City, CA 94103</span>
-                    </div>
-                    <p>Have questions or need support with our app? Fill out the form and our team will get back to you within 24 hours.</p>
                 </div>
-                
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Your Message</label>
-                            <textarea id="message" placeholder="How can we help you?" required></textarea>
-                        </div>
-                        
-                        <!-- Cloudflare Turnstile Widget -->
-                        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="verifyCallback"></div>
-                        
-                        <button type="submit" class="submit-btn">Send Message</button>
-                        
-                        <div id="successMessage" class="success-message">
-                            Thank you for your message! We'll get back to you soon.
-                        </div>
-                    </form>
-                </div>
+                <i class="fas fa-chevron-down chevron-down"></i>
             </div>
-        </section>
+        </div>
+
+        <div class="options-container">
+            <button class="option active" data-option="dashboard">
+                <div class="option-icon"><i class="fas fa-home"></i></div>
+                <span class="option-text">Dashboard</span>
+            </button>
+            
+            <button class="option" data-option="sales">
+                <div class="option-icon"><i class="fas fa-dollar-sign"></i></div>
+                <span class="option-text">Sales</span>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="option" data-option="view-site">
+                <div class="option-icon"><i class="fas fa-desktop"></i></div>
+                <span class="option-text">View Site</span>
+            </button>
+            
+            <button class="option" data-option="products">
+                <div class="option-icon"><i class="fas fa-shopping-cart"></i></div>
+                <span class="option-text">Products</span>
+            </button>
+            
+            <button class="option" data-option="tags">
+                <div class="option-icon"><i class="fas fa-tag"></i></div>
+                <span class="option-text">Tags</span>
+            </button>
+            
+            <button class="option" data-option="analytics">
+                <div class="option-icon"><i class="fas fa-chart-bar"></i></div>
+                <span class="option-text">Analytics</span>
+            </button>
+            
+            <button class="option" data-option="members">
+                <div class="option-icon"><i class="fas fa-users"></i></div>
+                <span class="option-text">Members</span>
+            </button>
+        </div>
+
+        <button class="toggle-button" id="toggleButton">
+            <div class="toggle-content">
+                <div class="toggle-icon"><i class="fas fa-chevrons-right"></i></div>
+                <span class="toggle-text">Hide</span>
+            </div>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <p>Welcome to your admin dashboard. Here's what's happening with your store today.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Total Revenue</h3>
+                    <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                </div>
+                <div class="card-value">$24,265</div>
+                <div class="card-change">+12.5% from last week</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Customers</h3>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                </div>
+                <div class="card-value">1,248</div>
+                <div class="card-change">+8.2% from last week</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Orders</h3>
+                    <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+                </div>
+                <div class="card-value">362</div>
+                <div class="card-change">+5.7% from last week</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Conversion Rate</h3>
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                </div>
+                <div class="card-value">3.24%</div>
+                <div class="card-change negative">-0.8% from last week</div>
+            </div>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 iFixMyTech. All rights reserved.</p>
-    </footer>
-
     <script>
-        // Simple JavaScript for interactivity
-        console.log("iFixMyTech website loaded successfully!");
-
-        // Smooth scrolling for navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Welcome to iFixMyTech!");
+            const sidebar = document.getElementById('sidebar');
+            const toggleButton = document.getElementById('toggleButton');
+            const options = document.querySelectorAll('.option');
             
-            const navLinks = document.querySelectorAll('nav a');
+            // Toggle sidebar collapse
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                
+                // Update toggle button text
+                const toggleText = document.querySelector('.toggle-text');
+                if (sidebar.classList.contains('collapsed')) {
+                    toggleText.textContent = 'Show';
+                } else {
+                    toggleText.textContent = 'Hide';
+                }
+            });
             
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
+            // Handle option selection
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    options.forEach(opt => opt.classList.remove('active'));
                     
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
+                    // Add active class to clicked option
+                    this.classList.add('active');
                     
-                    if (targetSection) {
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 70,
-                            behavior: 'smooth'
-                        });
-                    }
+                    // Update page content based on selection
+                    const optionName = this.getAttribute('data-option');
+                    updateMainContent(optionName);
                 });
             });
-
-            // Form submission handling
-            const contactForm = document.getElementById('contactForm');
-            const successMessage = document.getElementById('successMessage');
             
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // Update main content based on selected option
+            function updateMainContent(option) {
+                const header = document.querySelector('.header h1');
+                const subtitle = document.querySelector('.header p');
                 
-                // In a real implementation, you would validate the Turnstile token here
-                // For this example, we'll simulate a successful form submission
-                
-                // Show success message
-                successMessage.style.display = 'block';
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 5000);
-            });
+                switch(option) {
+                    case 'dashboard':
+                        header.textContent = 'Dashboard';
+                        subtitle.textContent = 'Welcome to your admin dashboard. Here\'s what\'s happening with your store today.';
+                        break;
+                    case 'sales':
+                        header.textContent = 'Sales';
+                        subtitle.textContent = 'View and manage your sales data and transactions.';
+                        break;
+                    case 'view-site':
+                        header.textContent = 'View Site';
+                        subtitle.textContent = 'Preview how your site looks to visitors.';
+                        break;
+                    case 'products':
+                        header.textContent = 'Products';
+                        subtitle.textContent = 'Manage your product catalog and inventory.';
+                        break;
+                    case 'tags':
+                        header.textContent = 'Tags';
+                        subtitle.textContent = 'Organize your products with tags and categories.';
+                        break;
+                    case 'analytics':
+                        header.textContent = 'Analytics';
+                        subtitle.textContent = 'Analyze your store performance with detailed metrics.';
+                        break;
+                    case 'members':
+                        header.textContent = 'Members';
+                        subtitle.textContent = 'Manage your team members and their permissions.';
+                        break;
+                }
+            }
+            
+            // Simulate animations on page load
+            setTimeout(() => {
+                sidebar.style.transition = 'width 0.3s ease';
+            }, 500);
         });
-
-        // Turnstile verification callback
-        function verifyCallback(token) {
-            console.log("Turnstile verification passed with token: ", token);
-            // In a real implementation, you would send this token to your server for verification
-        }
-
-        // Note: In a production environment, you would need to:
-        // 1. Replace the dummy sitekey with your actual Cloudflare Turnstile sitekey
-        // 2. Implement server-side validation of the Turnstile token
-        // 3. Add proper error handling for form submission
     </script>
 </body>
 </html>
